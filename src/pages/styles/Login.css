@@ -1,0 +1,7 @@
+.btn-iniciar {
+    background-color: rgb(19, 255, 176);
+    color: rgba(255, 255, 255, 0.973);
+    border-color: whitesmoke;
+    border-radius: 5%;
+    border-style: hidden;
+}
