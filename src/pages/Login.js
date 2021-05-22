@@ -30,7 +30,7 @@ class Login extends Component {
                 </div>
                 <div className="row d-flex justify-content-center mt-2">
                     <div className="col-12 col-md-6">
-                        <Link to='/home' className="btn btn-success btn-block">Iniciar Sesión</Link>
+                        <Link to='/routes' className="btn btn-success btn-block">Iniciar Sesión</Link>
                     </div>                    
                 </div>
                 <div className="row d-flex justify-content-center mt-2">

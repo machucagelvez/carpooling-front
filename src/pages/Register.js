@@ -1,13 +1,13 @@
 import { Component } from "react";
 import { Link } from "react-router-dom";
-
+import ModalTerms from '../components/ModalTerms';
 
 class Register extends Component {
     render() {
         return (
             <div className="container">
                 <div className="row d-flex justify-content-center mt-5">
-                    <h5 className="text-black-50">Registrarse en Carpooling App</h5>
+                    <h4 className="text-black-50">Registrarse en Carpooling App</h4>
                 </div>
                 <div className="row d-flex justify-content-center mt-3">
                     <div className="col-12 col-md-6">
@@ -34,7 +34,7 @@ class Register extends Component {
                                 <div className="form-check">
                                     <input className="form-check-input" type="checkbox"/>
                                     <label className="form-check-label">
-                                    Aceptar términos y condiciones
+                                    Aceptar <ModalTerms/>
                                     </label>
                                 </div>
                                 </div>
@@ -44,7 +44,7 @@ class Register extends Component {
                                     <Link to='/' className="btn btn-danger btn-block">Cancelar</Link>
                                 </div>
                                 <div className="col">
-                                    <button className="btn btn-success btn-block">Aceptar</button>
+                                    <Link to='/routes' className="btn btn-success btn-block">Aceptar</Link>
                                 </div>
                             </div>
                             </form>
@@ -52,6 +52,8 @@ class Register extends Component {
                 </div>
                 
             </div>
+
+            
         )
     }
 }
