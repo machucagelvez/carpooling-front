@@ -3,6 +3,48 @@ import { Link } from "react-router-dom";
 import ModalTerms from '../components/ModalTerms';
 
 class Register extends Component {
+
+    constructor(props){
+        super(props)
+        this.state = {
+            email: '',
+            phone: '',
+            user: '',
+            password: ''
+        }
+
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
+    }
+
+    handleChange(event) {
+        const {name, value} = event.target
+        this.setState({
+            [name]: value
+        })
+    }
+
+    handleSubmit(event) {
+        event.preventDefault()
+        fetch('http://localhost:4000/user',{
+            method: 'POST',
+            body:JSON.stringify(this.state),
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            this.setState({ //NO se está borrando en pantalla
+                email: '',
+                phone: '',
+                user: '',
+                password: ''
+            })
+        })
+    }
+
     render() {
         return (
             <div className="container">
@@ -11,22 +53,34 @@ class Register extends Component {
                 </div>
                 <div className="row d-flex justify-content-center mt-3">
                     <div className="col-12 col-md-6">
-                        <form>
+                        <form onSubmit={this.handleSubmit}>
                             <div className="form-group">
                                 <label className="text-danger">Correo Electrónico</label>
-                                <input type="email" className="form-control"/>
+                                <input 
+                                type="email" name="email" className="form-control"
+                                onChange={this.handleChange} value={this.setState.email}
+                                />
                             </div>
                             <div className="form-group">
                                 <label className="text-danger">Número de Celular</label>
-                                <input type="number" className="form-control"/>
+                                <input 
+                                type="number" name="phone" className="form-control"
+                                onChange={this.handleChange} value={this.setState.phone}
+                                />
                             </div>
                             <div className="form-group">
                                 <label className="text-danger">Nombre de Usuario</label>
-                                <input type="text" className="form-control"/>
+                                <input 
+                                type="text" name="user" className="form-control"
+                                onChange={this.handleChange} value={this.setState.user}
+                                />
                             </div>
                             <div className="form-group">
                                 <label className="text-danger">Contraseña</label>
-                                <input type="password" className="form-control"/>
+                                <input 
+                                type="password" name="password" className="form-control"
+                                onChange={this.handleChange} value={this.setState.password}
+                                />
                             </div>
 
                             <div className="form-group row">
@@ -44,7 +98,7 @@ class Register extends Component {
                                     <Link to='/' className="btn btn-danger btn-block">Cancelar</Link>
                                 </div>
                                 <div className="col">
-                                    <Link to='/routes' className="btn btn-success btn-block">Aceptar</Link>
+                                    <button type="submit" className="btn btn-success btn-block">Aceptar</button>
                                 </div>
                             </div>
                             </form>
