@@ -39,8 +39,10 @@ class AvailableRoutes extends Component {
                     carpooler: route.data.carpooler,
                     cost: route.data.cost
                 })
-                //console.log(this.state);
-                this.props.history.push('/routeview', this.state)
+                //const data = this.state
+                const {routes, ...rest} = this.state
+                console.log(rest);
+                this.props.history.push('/viewroute', rest)
             })
 
         

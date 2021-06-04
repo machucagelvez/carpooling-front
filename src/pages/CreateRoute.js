@@ -1,19 +1,19 @@
-import { Link } from 'react-router-dom'
+//import { Link } from 'react-router-dom'
 import currentPosition from '../images/gps.svg'
 import './styles/CreateRoute.css'
 
 function SearchBar() {
     return(
         <div className="fixed-top">
-            <fieldset className="border border-secondary rounded bg-secondary">
+            <fieldset className="border border-secondary rounded bg-dark">
                 <h5 className="text-center text-secondary text-light">Ingresa el inicio y fin de la ruta:</h5>
                 <form className="mb-1">
                     <div className="form-row">
                         <div className="col">
-                            <input type="text" className="form-control" placeholder="Donde comienza"/>
+                            <input type="text" className="form-control" placeholder="Acá comienza"/>
                         </div>
                         <div className="col">
-                            <input type="text" className="form-control" placeholder="Donde termina"/>
+                            <input type="text" className="form-control" placeholder="Acá termina"/>
                         </div>
                     </div>
                 </form>
