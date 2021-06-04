@@ -1,13 +1,20 @@
 import { Component } from "react";
-
+import { withRouter, Link } from "react-router-dom";
 
 class AvailableRoutes extends Component {
 
     constructor() {
         super()
         this.state = {
+            routeId: '',
+            schedule: '',
+            routeName: '',
+            carpooler: '',
+            cost: '',
             routes: []
         }
+
+        this.handleClick = this.handleClick.bind(this);
     }
 
     componentDidMount() {
@@ -16,8 +23,27 @@ class AvailableRoutes extends Component {
             .then((response) => response.json())         
             .then((datos) => {
                 this.setState({routes: datos.data});
-                console.log(this.state.routes);
+                //console.log(this.state.routes);
             })
+    }
+
+    handleClick(id) {
+        const apiUrl = `http://localhost:4000/route/${id}`;
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(route => {
+                this.setState({
+                    routeId: route.data.routeId,
+                    schedule: route.data.schedule,
+                    routeName: route.data.routeName,
+                    carpooler: route.data.carpooler,
+                    cost: route.data.cost
+                })
+                //console.log(this.state);
+                this.props.history.push('/routeview', this.state)
+            })
+
+        
     }
     
     render() {
@@ -27,7 +53,7 @@ class AvailableRoutes extends Component {
                     <h4 className="text-black-50 ml-4">Rutas disponibles</h4>
                 </div>
 
-                <table className="table table-striped">
+                <table className="table table-sm table-striped">
                     <thead>
                         <tr>
                         <th scope="col">Horario</th>
@@ -42,7 +68,7 @@ class AvailableRoutes extends Component {
                                 return(
                                     <tr key={route.routeId}>
                                         <td>{route.schedule}</td>
-                                        <td>{route.routeName}</td>
+                                        <td><Link to="#" onClick={() => this.handleClick(route.routeId)}>{route.routeName}</Link></td>
                                         <td>{route.carpooler}</td>
                                         <td>{}</td>
                                     </tr>
@@ -60,4 +86,4 @@ class AvailableRoutes extends Component {
 
 }
 
-export default AvailableRoutes
+export default withRouter(AvailableRoutes)
