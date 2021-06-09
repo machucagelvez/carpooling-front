@@ -1,3 +1,4 @@
+import { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 function Header(props) {
@@ -54,16 +55,30 @@ function Footer(props) {
     )
 }
 
-function ViewRoute(props) {
+class ViewRoute extends Component {
 
-    return (
-        <div className="border border-secondary rounded">
-            <Header name={props.location.state.routeName}/>        
-            
-            <Footer route={props.location.state} />
-            
-        </div>
-    )
+    constructor(props) {
+        super(props)
+        this.state = {
+            routeId: props.location.state.routeId,
+            schedule: props.location.state.schedule,
+            routeName: props.location.state.routeName,
+            carpooler: props.location.state.carpooler,
+            cost:props.location.state.cost
+        }
+    }
+    
+    render() {
+
+        return (
+            <div className="border border-secondary rounded">
+                <Header name={this.state.routeName}/>        
+                
+                <Footer route={this.state} />
+                
+            </div>
+        )
+    }
 }
 
 export default ViewRoute

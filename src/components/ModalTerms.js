@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from "react-router-dom";
 import {Modal, Button} from 'react-bootstrap'
 
 function ModalTerms() {
@@ -9,8 +10,8 @@ function ModalTerms() {
   
     return (
       <>
-        <label className="text-danger" onClick={handleShow}>
-          términos y condiciones
+        <label onClick={handleShow}>
+          Aceptar <Link to="#" className="text-secondary">términos y condiciones</Link>
         </label>
   
         <Modal show={show} onHide={handleClose}>
@@ -40,8 +41,8 @@ function ModalTerms() {
             Ina ramaniusue.</p>                        
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="success" onClick={handleClose}>
-              Aceptar
+            <Button variant="secondary" onClick={handleClose}>
+              Cerrar
             </Button>
           </Modal.Footer>
         </Modal>

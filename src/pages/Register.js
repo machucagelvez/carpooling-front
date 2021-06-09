@@ -1,8 +1,7 @@
 import { Formik } from "formik";
-//import { Component } from "react";
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-//import ModalTerms from '../components/ModalTerms';
+import { Link, withRouter } from "react-router-dom";
+import ModalTerms from '../components/ModalTerms';
 import * as yup from 'yup';
 
 
@@ -16,32 +15,12 @@ const schema = yup.object().shape({
 
 function Register() {
 
-    // constructor(){
-    //     super()
-    //     this.state = {
-    //         email: '',
-    //         phone: '',
-    //         user: '',
-    //         password: ''
-    //     }
-
-    //     this.handleChange = this.handleChange.bind(this)
-    //     this.addUser = this.addUser.bind(this)
-    // }
-
-    // handleChange(event) {
-    //     const {name, value} = event.target
-    //     this.setState({
-    //         [name]: value
-    //     })
-    // }
-
-    function AddUser(props) {
+    function SaveUser(values) {
         
         //event.preventDefault()
         fetch('http://localhost:4000/user',{
             method: 'POST',
-            body:JSON.stringify(props),
+            body:JSON.stringify(values),
             headers:{
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -52,6 +31,7 @@ function Register() {
             if(data.message!=='Usuario creado') {
                 return window.alert(data.message)
             }else{
+                //this.props.history.push('/routes')
                 return console.log(data)
             }
             
@@ -64,7 +44,10 @@ function Register() {
             <h4 className="text-black-50 text-center mt-5">Registrarse en Carpooling App</h4>
             <Formik
                 validationSchema={schema}
-                onSubmit={AddUser}
+                onSubmit={(values, actions) => {                            
+                            SaveUser(values)
+                            actions.setSubmitting(false);
+                }}
                 initialValues={{
                     email: '',
                     phone: '',
@@ -145,13 +128,14 @@ function Register() {
                                     <Form.Check
                                     required
                                     name="terms"
-                                    label="Aceptar términos y condiciones"
+                                    label={<ModalTerms/>}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     isInvalid={touched.terms && errors.terms}
                                     feedback={errors.terms}
                                     id="validationFormik0"
                                     />
+                                    
                                 </Form.Group>
                                 <div className="form-row">
                                     <div className="col">
@@ -171,4 +155,4 @@ function Register() {
     
 }
 
-export default Register
+export default withRouter(Register)
