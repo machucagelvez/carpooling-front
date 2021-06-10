@@ -6,6 +6,7 @@ import AvailableRoutes from '../pages/AvailableRoutes';
 import CreateRoute from '../pages/CreateRoute'
 import ViewRoute from '../pages/ViewRoute'
 import './styles/App.css';
+import CarpoolerRoutes from '../pages/CarpoolerRoutes';
 
 function App() {
     return (
@@ -16,6 +17,7 @@ function App() {
                 <Route exact path="/routes" component={AvailableRoutes} />
                 <Route exact path="/createroute" component={CreateRoute} />
                 <Route exact path="/viewroute" component={ViewRoute} />
+                <Route exact path="/cproutes" component={CarpoolerRoutes} />
             </Switch>
         </BrowserRouter>
         

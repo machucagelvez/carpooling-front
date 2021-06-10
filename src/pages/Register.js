@@ -13,11 +13,9 @@ const schema = yup.object().shape({
     terms: yup.bool().required().oneOf([true], 'Se deben aceptar los términos y condiciones')
 })
 
-function Register() {
+function Register(props) {
 
     function SaveUser(values) {
-        
-        //event.preventDefault()
         fetch('http://localhost:4000/user',{
             method: 'POST',
             body:JSON.stringify(values),
@@ -29,10 +27,9 @@ function Register() {
         .then(res => res.json())
         .then(data => {
             if(data.message!=='Usuario creado') {
-                return window.alert(data.message)
+                window.alert(data.message)
             }else{
-                //this.props.history.push('/routes')
-                return console.log(data)
+                props.history.push('/routes')
             }
             
         })

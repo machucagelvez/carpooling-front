@@ -45,7 +45,7 @@ function Footer(props) {
                 </thead>
                 <tbody>                    
                     <tr>
-                        <td>{props.route.schedule}</td>
+                        <td>{props.route.schedule} - {props.route.time}</td>
                         <td>${props.route.cost}</td>
                         <td>{props.route.carpooler}</td>
                     </tr>
@@ -62,14 +62,14 @@ class ViewRoute extends Component {
         this.state = {
             routeId: props.location.state.routeId,
             schedule: props.location.state.schedule,
+            time: props.location.state.time,
             routeName: props.location.state.routeName,
             carpooler: props.location.state.carpooler,
             cost:props.location.state.cost
         }
     }
     
-    render() {
-
+    render() {        
         return (
             <div className="border border-secondary rounded">
                 <Header name={this.state.routeName}/>        

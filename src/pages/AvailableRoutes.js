@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { withRouter, Link } from "react-router-dom";
+//import Menu from '../components/Menu'
 
 class AvailableRoutes extends Component {
 
@@ -8,6 +9,7 @@ class AvailableRoutes extends Component {
         this.state = {
             routeId: '',
             schedule: '',
+            time: '',
             routeName: '',
             carpooler: '',
             cost: '',
@@ -23,7 +25,6 @@ class AvailableRoutes extends Component {
             .then((response) => response.json())         
             .then((datos) => {
                 this.setState({routes: datos.data});
-                //console.log(this.state.routes);
             })
     }
 
@@ -35,6 +36,7 @@ class AvailableRoutes extends Component {
                 this.setState({
                     routeId: route.data.routeId,
                     schedule: route.data.schedule,
+                    time: route.data.time,
                     routeName: route.data.routeName,
                     carpooler: route.data.carpooler,
                     cost: route.data.cost
@@ -48,6 +50,7 @@ class AvailableRoutes extends Component {
     }
     
     render() {
+        
         return (
             <div className="container">
                 <div className="row d-flex justify-content-start mt-5">
@@ -60,7 +63,6 @@ class AvailableRoutes extends Component {
                         <th scope="col">Horario</th>
                         <th scope="col">Ruta</th>
                         <th scope="col">Carpooler</th>
-                        <th scope="col">Transporte</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -68,10 +70,9 @@ class AvailableRoutes extends Component {
                             this.state.routes.map(route => {
                                 return(
                                     <tr key={route.routeId}>
-                                        <td>{route.schedule}</td>
+                                        <td>{route.schedule} - {route.time}</td>
                                         <td><Link to="#" onClick={() => this.handleClick(route.routeId)}>{route.routeName}</Link></td>
                                         <td>{route.carpooler}</td>
-                                        <td>{}</td>
                                     </tr>
                                 )                                
                             })                            

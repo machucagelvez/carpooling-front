@@ -12,11 +12,12 @@ const schema = yup.object().shape({
     spaces: yup.number().required('Campo obligatorio')
 })
 
-function SaveRoute(values) {
-    console.log(values)
+function SaveRoute(values, props) {    
+    const completeRoute = {...props.route, ...values}
+
     fetch('http://localhost:4000/route',{
             method: 'POST',
-            body:JSON.stringify(values),
+            body:JSON.stringify(completeRoute),
             headers:{
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -25,26 +26,22 @@ function SaveRoute(values) {
         .then(res => res.json())
         .then(data => {
             if(data.message!=='Ruta creada') {
-                return window.alert(data.message)
+                window.alert(data.message)
             }else{
-                //this.props.history.push('/routes')
-                return console.log(data)
+                props.history.push('/cproutes')
             }
             
         })
 }
 
-function ModalNewRoute() {
-    const [show, setShow] = useState(false);
-  
+function ModalNewRoute(props) {
+    const [show, setShow] = useState(false);  
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     return (
         <>
-            <Button className="btn btn-success" onClick={handleShow}>
-                Crear
-            </Button>
+            <Button className="btn btn-success" onClick={handleShow}>Crear</Button>
     
             <Modal show={show} onHide={handleClose} >
                 <Modal.Header className="bg-dark" closeButton>
@@ -54,7 +51,7 @@ function ModalNewRoute() {
                     <Formik
                         validationSchema={schema}
                         onSubmit={(values, actions) => {                            
-                            SaveRoute(values)
+                            SaveRoute(values, props)
                             actions.setSubmitting(false);
                             
                         }}
@@ -155,8 +152,7 @@ function ModalNewRoute() {
                                     <Button variant="success" type="submit" >Aceptar</Button>  
                                 </Row>                                                       
                             </Form>                            
-                        )}
-                         
+                        )}                         
                     </Formik>                                          
                 </Modal.Body>
             </Modal>
