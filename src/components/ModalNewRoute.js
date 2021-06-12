@@ -52,8 +52,7 @@ function ModalNewRoute(props) {
                         validationSchema={schema}
                         onSubmit={(values, actions) => {                            
                             SaveRoute(values, props)
-                            actions.setSubmitting(false);
-                            
+                            actions.setSubmitting(false);                            
                         }}
                         initialValues={{
                             routeName: '',

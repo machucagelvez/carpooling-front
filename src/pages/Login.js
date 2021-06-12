@@ -1,48 +1,105 @@
-import { Component } from "react";
+import { Formik } from "formik";
+//import { Component } from "react";
+import { Form, Button } from "react-bootstrap";
 import {Link} from 'react-router-dom'
 import logo from '../images/car.png'
 import './styles/Login.css'
+import * as yup from 'yup';
 
+const schema = yup.object().shape({
+    email: yup.string().email('Debe ser un email válido').required('Campo obligatorio'),
+    password: yup.string().required('Campo obligatorio')
+})
 
-class Login extends Component {
-    render() {
-        return (
-            <div className="container">
-                <div className="row d-flex justify-content-center mt-5">                    
-                    <img src={logo} alt="car-logo" />
-                </div>
-                <div className="row d-flex justify-content-center">                    
-                    <h3 className="text-black-50 font-weight-bold">Carpooling App</h3>
-                </div>
-                <div className="row d-flex justify-content-center mt-3">
-                    <div className="col-12 col-md-6">
-                        <form>
-                            <div className="form-group">
-                                <label className="text-danger">Correo Electrónico:</label>
-                                <input type="email" className="form-control" placeholder="Ingrese el correo"/>
-                            </div>
-                            <div className="form-group">
-                                <label className="text-danger">Contraseña:</label>
-                                <input type="password" className="form-control" placeholder="Ingrese la contraseña"/>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div className="row d-flex justify-content-center mt-2">
-                    <div className="col-12 col-md-6">
-                        <Link to='/routes' className="btn btn-success btn-block">Iniciar Sesión</Link>
-                    </div>                    
-                </div>
-                <div className="row d-flex justify-content-center mt-2">
-                    <Link to='/register' className="text-danger">Registrarse</Link>
-                </div>
-                
-                
-                
+function SignIn(values, props) {
+    fetch('http://localhost:4000/auth/login',{
+            method: 'POST',
+            body:JSON.stringify(values),
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.message!=='Login exitoso') {
+                window.alert(data.message)
+            }else{
+                props.history.push('/routes')
+            }            
+        })
+}
 
+function Login(props) {
+    return (
+        <div className="container">
+            <div className="row d-flex justify-content-center mt-5">                    
+                <img src={logo} alt="car-logo" />
             </div>
-        )
-    }
+            <div className="row d-flex justify-content-center">                    
+                <h3 className="text-black-50 font-weight-bold">Carpooling App</h3>
+            </div>
+            <div className="row d-flex justify-content-center mt-3">
+                <div className="col-12 col-md-6">
+                    <Formik
+                        validationSchema={schema}
+                        onSubmit={(values, actions) => { 
+                            SignIn(values, props)
+                            actions.setSubmitting(false)
+                        }}
+                        initialValues={{
+                            email: '',
+                            password: ''
+                        }}
+                    >
+                        {({
+                            handleSubmit,
+                            handleChange,
+                            handleBlur,
+                            values,
+                            touched,
+                            errors
+                        }) => (
+                            <Form noValidate onSubmit={handleSubmit}>
+                                <Form.Group>
+                                    <Form.Label className="text-secondary">Correo Electrónico:</Form.Label>
+                                    <Form.Control 
+                                        type="email"
+                                        name="email" 
+                                        value={values.email}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        isInvalid={touched.email && errors.email}
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.email}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                                <Form.Group>
+                                    <Form.Label className="text-secondary">Contraseña:</Form.Label>
+                                    <Form.Control 
+                                        type="password"
+                                        name="password" 
+                                        value={values.password}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        isInvalid={touched.password && errors.password}
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.password}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                                <Button variant="success btn-block" type="submit" >Iniciar Sesión</Button> 
+                            </Form>
+                        )}                                    
+                    </Formik>                        
+                </div>
+            </div>                
+            <div className="row d-flex justify-content-center mt-2">
+                <Link to='/register' className="text-danger">Registrarse</Link>
+            </div>
+        </div>
+    )
 }
 
 export default Login
