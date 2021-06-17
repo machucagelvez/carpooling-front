@@ -25,6 +25,7 @@ function SignIn(values, props) {
             if(data.message!=='Login exitoso') {
                 window.alert(data.message)
             }else{
+                localStorage.token = data.data.accessToken
                 props.history.push('/routes')
             }            
         })

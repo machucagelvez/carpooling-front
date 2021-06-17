@@ -1,4 +1,5 @@
 import { Component } from "react";
+import Sidebar from "../components/Sidebar";
 
 
 class CarpoolerRoutes extends Component{
@@ -7,6 +8,7 @@ class CarpoolerRoutes extends Component{
 
         return(
             <div className="container">
+                <Sidebar/>
                 <div className="row d-flex justify-content-start mt-5">
                     <h4 className="text-black-50 ml-4">Rutas Activas</h4>
                 </div>

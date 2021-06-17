@@ -7,6 +7,7 @@ import CreateRoute from '../pages/CreateRoute'
 import ViewRoute from '../pages/ViewRoute'
 import './styles/App.css';
 import CarpoolerRoutes from '../pages/CarpoolerRoutes';
+import Prueba from '../pages/Prueba';
 
 function App() {
     return (

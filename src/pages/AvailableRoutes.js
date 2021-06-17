@@ -42,7 +42,6 @@ class AvailableRoutes extends Component {
                     cost: route.data.cost
                 })
                 const {routes, ...rest} = this.state
-                console.log(rest);
                 this.props.history.push('/viewroute', rest)
             })
 
