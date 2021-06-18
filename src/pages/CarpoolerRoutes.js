@@ -1,4 +1,6 @@
 import { Component } from "react";
+import { Table } from 'react-bootstrap'
+import {Link} from 'react-router-dom'
 import Sidebar from "../components/Sidebar";
 
 
@@ -9,11 +11,11 @@ class CarpoolerRoutes extends Component{
         return(
             <div className="container">
                 <Sidebar/>
-                <div className="row d-flex justify-content-start mt-5">
+                <div className="row d-flex justify-content-between mt-4">
                     <h4 className="text-black-50 ml-4">Rutas Activas</h4>
+                    <Link to="/createroute" className="btn btn-primary mr-4 mb-2">Nueva ruta</Link>
                 </div>
-
-                <table className="table table-sm table-striped">
+                <Table striped responsive="sm">
                     <thead>
                         <tr>
                         <th scope="col">Horario</th>
@@ -34,7 +36,7 @@ class CarpoolerRoutes extends Component{
                             <td>Pendiente</td>
                         </tr>
                     </tbody>
-                </table>
+                </Table>
             </div>
         )
     }

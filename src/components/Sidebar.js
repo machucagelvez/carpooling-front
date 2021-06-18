@@ -9,6 +9,7 @@ import * as VscIcons from "react-icons/vsc";
 import * as GiIcons from "react-icons/gi";
 import * as IoIcons from "react-icons/io";
 import { IconContext } from "react-icons/lib";
+import ModalNewVehicle from './ModalNewVehicle'
 
 const Nav = styled.div`
 background: rgb(83, 83, 83);
@@ -66,35 +67,6 @@ const SidebarLabel = styled.span`
 margin-left: 16px;
 `;
 
-function UpdateRol(id, rol) {    
-    fetch(`http://localhost:4000/user/${id}`,{
-            method: 'PUT',
-            body:JSON.stringify({rol: rol}),
-            headers:{
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.token}`
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-                     
-        })
-    
-        fetch(`http://localhost:4000/auth/refresh`,{
-            method: 'GET',
-            headers:{
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.token}`
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            localStorage.token = data.data.accessToken
-        })
-}
-
 function SignOut() {
     localStorage.clear()
 }
@@ -104,17 +76,13 @@ function Sidebar() {
     const [sidebar, setSidebar] = useState(false);
     const showSidebar = () => setSidebar(!sidebar);
 
-    let token = localStorage.token
-    let decoded = jwt_decode(token)
-    const [rol, setRol] = useState(decoded.rol);
-    const changeRol = () => {
-        setRol(!rol)
-        UpdateRol(decoded.id, !rol)
-    }    
+    const token = localStorage.token
+    const decoded = jwt_decode(token)
+    const [type] = useState(decoded.type);   
 
     let linkRoutes, button
-    if(rol) {
-        button = <UserActive onClick={changeRol}/>  
+    if(type) {
+        button = <ModalNewVehicle id={decoded.id}/>  
     }else{        
         linkRoutes = <ActiveRoutes/>
     }
@@ -167,16 +135,6 @@ function Sidebar() {
             </>
         );
 };
-
-function UserActive(props) {
-    return(
-        <div>
-            <button className="btn btn-primary btn-sm" onClick={props.onClick}>
-                Ser carpooler
-            </button>
-        </div>
-    )    
-}
 
 function ActiveRoutes() {
 

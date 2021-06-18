@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { withRouter, Link } from "react-router-dom";
+import { Table } from 'react-bootstrap'
 import Sidebar from "../components/Sidebar";
 
 class AvailableRoutes extends Component {
@@ -53,11 +54,11 @@ class AvailableRoutes extends Component {
         return (
             <div className="container">
                 <Sidebar/>
-                <div className="row d-flex justify-content-start mt-5">
+                <div className="row d-flex justify-content-start mt-4">
                     <h4 className="text-black-50 ml-4">Rutas disponibles</h4>
                 </div>
 
-                <table className="table table-sm table-striped">
+                <Table striped responsive="sm">
                     <thead>
                         <tr>
                         <th scope="col">Horario</th>
@@ -78,7 +79,7 @@ class AvailableRoutes extends Component {
                             })                            
                         }
                     </tbody>
-                </table>
+                </Table>
 
 
             </div>

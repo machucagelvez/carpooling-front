@@ -1,5 +1,6 @@
 import { Formik } from 'formik'
 import { Form, Col } from 'react-bootstrap'
+import {Link} from 'react-router-dom'
 import ModalNewRoute from '../components/ModalNewRoute'
 import currentPosition from '../images/gps.svg'
 import * as yup from 'yup';
@@ -67,9 +68,9 @@ function CreateRoute() {
                             </Form.Row>
                             
                             <div className="row justify-content-center fixed-bottom mb-3">    
-                                <button to="/routes" type="button" className="btn btn-secondary mr-2">Volver</button>
+                                <Link to="/cproutes" type="button" className="btn btn-secondary mr-2">Volver</Link>
                                 <button type="button" className="btn btn-primary mr-2">Indicaciones</button>            
-                                <ModalNewRoute type="button" className="btn btn-success" route={{routeOrigin: 'A', routeDestination: 'B'}}>Crear</ModalNewRoute>                                 
+                                <ModalNewRoute route={{routeOrigin: 'A', routeDestination: 'B'}}></ModalNewRoute>                                 
                             </div>
                         </Form>
                         )}
