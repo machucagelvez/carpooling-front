@@ -9,8 +9,24 @@ const schema = yup.object().shape({
     brand: yup.string().required('Campo obligatorio')
 })
 
-function SaveVehicle(values, props) {    
-    
+function RefreshToken(token) {
+
+    fetch('http://localhost:4000/auth/refresh',{
+        method: 'GET',
+        headers:{
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        localStorage.token = data.data.accessToken
+    })
+}
+
+function ChangeType(props) {
+
     fetch(`http://localhost:4000/user/${props.id}`,{
         method: 'PUT',
         body:JSON.stringify({userType: false}),
@@ -22,22 +38,14 @@ function SaveVehicle(values, props) {
     })
     .then(res => res.json())
     .then(data => {
+        RefreshToken(localStorage.token)
     })
+}
 
-    fetch(`http://localhost:4000/auth/refresh`,{
-        method: 'GET',
-        headers:{
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.token}`
-        }
-    })
-    .then(res => res.json())
-    .then(data => {
-        localStorage.token = data.data.accessToken
-    })
+function SaveVehicle(values, props) {
 
-    const userId = {userId: props.id}
+    ChangeType(props)
+    const userId = {userId: props.id}    
     const vehicleData = {...userId, ...values}
     fetch('http://localhost:4000/vehicle',{
         method: 'POST',
@@ -53,9 +61,10 @@ function SaveVehicle(values, props) {
             window.alert(data.message)
         }else{
             props.history.push('/cproutes')
-        }
-        
-    })        
+        }        
+    })    
+    
+      
 }
 
 function ModalNewVehicle(props) {

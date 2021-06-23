@@ -61,8 +61,8 @@ class AvailableRoutes extends Component {
                 <Table striped responsive="sm">
                     <thead>
                         <tr>
-                        <th scope="col">Horario</th>
                         <th scope="col">Ruta</th>
+                        <th scope="col">Horario</th>
                         <th scope="col">Carpooler</th>
                         </tr>
                     </thead>
@@ -70,9 +70,9 @@ class AvailableRoutes extends Component {
                         {
                             this.state.routes.map(route => {
                                 return(
-                                    <tr key={route.routeId}>
-                                        <td>{route.schedule} - {route.time}</td>
+                                    <tr key={route.routeId}>                                        
                                         <td><Link to="#" onClick={() => this.handleClick(route.routeId)}>{route.routeName}</Link></td>
+                                        <td>{route.schedule} - {route.time}</td>
                                         <td>{route.carpooler}</td>
                                     </tr>
                                 )                                

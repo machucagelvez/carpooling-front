@@ -11,9 +11,10 @@ const schema = yup.object().shape({
     routeDestination: yup.string().required('Campo obligatorio')
 })
 
-function CreateRoute() {
+function CreateRoute(props) {
     return(
         <div>
+        {console.log(props.location.state)}
             <fieldset className="border border-secondary rounded bg-dark fixed-top">
                 <h5 className="text-center text-light">Ingresa inicio y fin de la ruta:</h5>
                 <Formik
@@ -69,8 +70,13 @@ function CreateRoute() {
                             
                             <div className="row justify-content-center fixed-bottom mb-3">    
                                 <Link to="/cproutes" type="button" className="btn btn-secondary mr-2">Volver</Link>
-                                <button type="button" className="btn btn-primary mr-2">Indicaciones</button>            
-                                <ModalNewRoute route={{routeOrigin: 'A', routeDestination: 'B'}}></ModalNewRoute>                                 
+                                <button type="button" className="btn btn-primary mr-2">Trazar ruta</button>            
+                                <ModalNewRoute route={
+                                    {routeOrigin: 'A', 
+                                    routeDestination: 'B', 
+                                    vehicleId: props.location.state.vehicleId, 
+                                    carpooler: props.location.state.user}
+                                }/>                                
                             </div>
                         </Form>
                         )}

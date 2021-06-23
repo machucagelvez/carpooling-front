@@ -13,6 +13,26 @@ const schema = yup.object().shape({
     terms: yup.bool().required().oneOf([true], 'Se deben aceptar los términos y condiciones')
 })
 
+function SignIn(values, props) {
+    fetch('http://localhost:4000/auth/login',{
+            method: 'POST',
+            body:JSON.stringify(values),
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.message!=='Login exitoso') {
+                window.alert(data.message)
+            }else{
+                localStorage.token = data.data.accessToken
+                props.history.push('/routes')
+            }            
+        })
+}
+
 function Register(props) {
 
     function SaveUser(values) {
@@ -29,7 +49,8 @@ function Register(props) {
             if(data.message!=='Usuario creado') {
                 window.alert(data.message)
             }else{
-                props.history.push('/routes')
+                SignIn(values, props)
+                //props.history.push('/routes')
             }
             
         })
