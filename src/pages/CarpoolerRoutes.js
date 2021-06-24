@@ -94,8 +94,6 @@ class CarpoolerRoutes extends Component{
                         <th scope="col">Horario</th>
                         <th scope="col">Costo</th>
                         <th scope="col">Puestos</th>
-                        <th scope="col">Inicio</th>
-                        <th scope="col">Fin</th>
                         <th scope="col">Puestos vacíos</th>
                         </tr>
                     </thead>
@@ -108,8 +106,6 @@ class CarpoolerRoutes extends Component{
                                         <td>{route.schedule} - {route.time}</td>
                                         <td>{route.cost}</td>
                                         <td>{route.spaces}</td>
-                                        <td>{route.routeOrigin}</td>
-                                        <td>{route.routeDestination}</td>
                                         <td>{route.emptySpaces}</td>
                                     </tr>
                                 )

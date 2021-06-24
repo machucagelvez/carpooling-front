@@ -1,3 +1,4 @@
+import { Component } from 'react'
 import { Formik } from 'formik'
 import { Form, Col } from 'react-bootstrap'
 import {Link} from 'react-router-dom'
@@ -6,15 +7,64 @@ import currentPosition from '../images/gps.svg'
 import * as yup from 'yup';
 import './styles/CreateRoute.css'
 
+
 const schema = yup.object().shape({
     routeOrigin: yup.string().required('Campo obligatorio'),
     routeDestination: yup.string().required('Campo obligatorio')
 })
 
-function CreateRoute(props) {
+class CreateRoute extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            origin: '',
+            destination: ''
+        }
+    }
+
+    componentDidMount() {
+        let map;
+        let markers = [];
+        const google = window.google;
+        let mapOptions = {
+            center: { lat: 6.2476, lng: -75.5658 },
+            zoom: 12
+        }
+        map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+        map.addListener("click", (event) => {
+            if(markers.length < 2){
+                addMarker(event.latLng);
+                if(markers.length < 2) {
+                    this.setState({origin: markers[0].getPosition().toString()})
+                    console.log(this.state.origin)
+                }else{
+                    this.setState({destination: markers[1].getPosition().toString()})
+                    console.log(this.state.destination)
+                }
+               
+            }            
+        });
+
+        function addMarker(location) {
+            const marker = new google.maps.Marker({
+                position: location,
+                map: map
+            });
+            markers.push(marker);
+            
+        }
+        
+        
+    }
+
+    render() {
+        
+    
     return(
         <div>
-        {console.log(props.location.state)}
+        <div id="map" className="map"></div>
             <fieldset className="border border-secondary rounded bg-dark fixed-top">
                 <h5 className="text-center text-light">Ingresa inicio y fin de la ruta:</h5>
                 <Formik
@@ -43,7 +93,7 @@ function CreateRoute(props) {
                                         type="text" 
                                         placeholder="Acá comienza"
                                         name="routeOrigin" 
-                                        value={values.routeOrigin}
+                                        value={this.state.origin}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         isInvalid={touched.routeOrigin && errors.routeOrigin}
@@ -57,7 +107,7 @@ function CreateRoute(props) {
                                         type="text" 
                                         placeholder="Acá termina"
                                         name="routeDestination" 
-                                        value={values.routeDestination}
+                                        value={this.state.destination}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         isInvalid={touched.routeDestination && errors.routeDestination}
@@ -72,10 +122,10 @@ function CreateRoute(props) {
                                 <Link to="/cproutes" type="button" className="btn btn-secondary mr-2">Volver</Link>
                                 <button type="button" className="btn btn-primary mr-2">Trazar ruta</button>            
                                 <ModalNewRoute route={
-                                    {routeOrigin: 'A', 
-                                    routeDestination: 'B', 
-                                    vehicleId: props.location.state.vehicleId, 
-                                    carpooler: props.location.state.user}
+                                    {routeOrigin: this.state.origin, 
+                                    routeDestination: this.state.destination, 
+                                    vehicleId: this.props.userData.vehicleId, 
+                                    carpooler: this.props.userData.user}
                                 }/>                                
                             </div>
                         </Form>
@@ -86,6 +136,7 @@ function CreateRoute(props) {
             <img src={currentPosition} className="position ml-4 mr-2 btn" alt="Locate me" />
         </div>
     )
+    }
 }
 
 export default CreateRoute

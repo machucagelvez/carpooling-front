@@ -17,9 +17,20 @@
 .position{
     position: absolute;
     bottom: 5rem;
-    right: 0rem;
+    left: 0rem;
     width: 4rem;
     height: 4rem;
     background: none;
     border: none;
+}
+
+#map {
+    height: 100vh;
+}
+    
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
