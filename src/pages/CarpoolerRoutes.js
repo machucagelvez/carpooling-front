@@ -33,7 +33,7 @@ class CarpoolerRoutes extends Component{
 
     handleClick() {
         this.props.history.push(
-            "/createroute", 
+            "/viewmap", 
             {
                 vehicleId: this.state.vehicleId, 
                 user: this.state.user,
@@ -74,8 +74,7 @@ class CarpoolerRoutes extends Component{
     }
 
     componentDidMount() {
-        this.RouteByVehicle()
-        
+        this.RouteByVehicle()        
     }
 
     render() {
@@ -84,7 +83,7 @@ class CarpoolerRoutes extends Component{
             <div className="container">
                 <Sidebar/>
                 <div className="row d-flex justify-content-between mt-4">
-                    <h4 className="text-black-50 ml-4">Rutas Activas</h4>
+                    <h4 className="text-black-50 ml-4">Rutas Carpooler</h4>
                     <button className="btn btn-primary mr-4 mb-2" onClick={this.handleClick}>Nueva ruta</button>
                 </div>
                 <Table striped responsive="sm">

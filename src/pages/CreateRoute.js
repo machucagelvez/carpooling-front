@@ -15,35 +15,37 @@ const schema = yup.object().shape({
 
 class CreateRoute extends Component {
 
+    mapOptions = {
+        center: { lat: 6.2476, lng: -75.5658 },
+        zoom: 13
+    }
+
     constructor(props) {
         super(props)
         this.state = {
             origin: '',
-            destination: ''
+            destination: '',
+            createdRoute: {}
         }
+        this.traceRoute = this.traceRoute.bind(this);
     }
 
-    componentDidMount() {
-        let map;
+    componentDidMount() {        
         let markers = [];
-        const google = window.google;
-        let mapOptions = {
-            center: { lat: 6.2476, lng: -75.5658 },
-            zoom: 12
-        }
-        map = new google.maps.Map(document.getElementById("map"), mapOptions);
+        const google = window.google;       
+        const map = new google.maps.Map(document.getElementById("map"), this.mapOptions); 
+        this.directionsService = new google.maps.DirectionsService();
+        this.directionsRenderer = new google.maps.DirectionsRenderer();        
+        this.directionsRenderer.setMap(map);
 
         map.addListener("click", (event) => {
             if(markers.length < 2){
                 addMarker(event.latLng);
                 if(markers.length < 2) {
-                    this.setState({origin: markers[0].getPosition().toString()})
-                    console.log(this.state.origin)
+                    this.setState({origin: markers[0].getPosition()})
                 }else{
-                    this.setState({destination: markers[1].getPosition().toString()})
-                    console.log(this.state.destination)
-                }
-               
+                    this.setState({destination: markers[1].getPosition()})
+                }               
             }            
         });
 
@@ -52,11 +54,26 @@ class CreateRoute extends Component {
                 position: location,
                 map: map
             });
-            markers.push(marker);
-            
+            markers.push(marker);                  
         }
-        
-        
+    }
+
+    traceRoute() {
+        this.directionsService.route(
+            {
+                origin: this.state.origin,
+                destination: this.state.destination,
+                travelMode: 'DRIVING'
+            },
+            (response, status) => {
+                if(status === 'OK') {
+                    this.directionsRenderer.setDirections(response);
+                    this.setState({createdRoute: JSON.stringify(response)})
+                }else {
+                window.alert("Directions request failed due to " + status);
+                }
+            }
+        )
     }
 
     render() {
@@ -89,6 +106,7 @@ class CreateRoute extends Component {
                             <Form onSubmit={handleSubmit}>                    
                             <Form.Row>                        
                                 <Form.Group as={Col}>
+                                    <Form.Label className="text-light">Origen:</Form.Label>
                                     <Form.Control 
                                         type="text" 
                                         placeholder="Acá comienza"
@@ -103,6 +121,7 @@ class CreateRoute extends Component {
                                     </Form.Control.Feedback>
                                 </Form.Group>                                
                                 <Form.Group as={Col}>
+                                    <Form.Label className="text-light">Destino:</Form.Label>
                                     <Form.Control 
                                         type="text" 
                                         placeholder="Acá termina"
@@ -120,10 +139,11 @@ class CreateRoute extends Component {
                             
                             <div className="row justify-content-center fixed-bottom mb-3">    
                                 <Link to="/cproutes" type="button" className="btn btn-secondary mr-2">Volver</Link>
-                                <button type="button" className="btn btn-primary mr-2">Trazar ruta</button>            
+                                <button type="button" className="btn btn-primary mr-2" onClick={this.traceRoute}>Trazar ruta</button>            
                                 <ModalNewRoute route={
-                                    {routeOrigin: this.state.origin, 
-                                    routeDestination: this.state.destination, 
+                                    {routeOrigin: this.state.origin.toString(), 
+                                    routeDestination: this.state.destination.toString(),
+                                    createdRoute: this.state.createdRoute,
                                     vehicleId: this.props.userData.vehicleId, 
                                     carpooler: this.props.userData.user}
                                 }/>                                

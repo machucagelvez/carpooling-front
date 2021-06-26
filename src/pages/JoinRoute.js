@@ -1,5 +1,6 @@
 import { Component } from 'react'
 import { Link } from 'react-router-dom'
+import './styles/CreateRoute.css'
 
 function Header(props) {
     return(
@@ -35,8 +36,8 @@ function Footer(props) {
                     </div>       
                 </div>
             </div>
-            <table className="table table-sm table-bordered">
-                <thead className="thead-dark">
+            <table className="table table-sm table-bordered table-striped table-dark">
+                <thead>
                     <tr>
                         <th>Horario:</th>
                         <th>Costo:</th>
@@ -55,23 +56,61 @@ function Footer(props) {
     )
 }
 
-class ViewRoute extends Component {
+class JoinRoute extends Component {
 
     constructor(props) {
         super(props)
+        const token = localStorage.token
         this.state = {
-            routeId: props.location.state.routeId,
-            schedule: props.location.state.schedule,
-            time: props.location.state.time,
-            routeName: props.location.state.routeName,
-            carpooler: props.location.state.carpooler,
-            cost:props.location.state.cost
+            token: token,
+            routeId: props.userData.routeId,
+            schedule: props.userData.schedule,
+            time: props.userData.time,
+            routeName: props.userData.routeName,
+            carpooler: props.userData.carpooler,
+            cost:props.userData.cost,
+            routeOrigin: props.userData.routeOrigin,
+            createdRoute: {}
         }
+        this.position = this.state.routeOrigin.split(',')
+        this.lat = parseFloat(this.position[0].slice(1))
+        this.lng = parseFloat(this.position[1].slice(1, -1))
+    }
+
+    RouteById() {
+        fetch(`http://localhost:4000/route/${this.state.routeId}`, {
+            method: 'GET',
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.state.token}`
+            }
+        })
+        .then(res => res.json())
+        .then(route => {
+            this.setState({createdRoute: JSON.parse(route.data.createdRoute)})
+            console.log(this.state.createdRoute)
+        })
+    }
+
+    componentDidMount() {
+        const google = window.google;       
+        const map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: this.lat, lng: this.lng },
+            zoom: 14
+        }); 
+        this.directionsService = new google.maps.DirectionsService();
+        this.directionsRenderer = new google.maps.DirectionsRenderer();
+        this.RouteById()
+        this.directionsRenderer.setDirections(this.state.createdRoute);
+        this.directionsRenderer.setMap(map);
+        
     }
     
     render() {        
         return (
             <div className="border border-secondary rounded">
+                <div id="map" className="map"></div>
                 <Header name={this.state.routeName}/>        
                 
                 <Footer route={this.state} />
@@ -81,4 +120,4 @@ class ViewRoute extends Component {
     }
 }
 
-export default ViewRoute
+export default JoinRoute

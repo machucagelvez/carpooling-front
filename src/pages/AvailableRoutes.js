@@ -40,10 +40,11 @@ class AvailableRoutes extends Component {
                     time: route.data.time,
                     routeName: route.data.routeName,
                     carpooler: route.data.carpooler,
-                    cost: route.data.cost
+                    cost: route.data.cost,
+                    routeOrigin: route.data.routeOrigin
                 })
                 const {routes, ...rest} = this.state
-                this.props.history.push('/viewroute', rest)
+                this.props.history.push('/viewmap', rest)
             })
 
         
