@@ -67,7 +67,7 @@ const SidebarLabel = styled.span`
 margin-left: 16px;
 `;
 
-function SignOut() {
+function signOut() {
     localStorage.clear()
 }
 
@@ -116,6 +116,12 @@ function Sidebar() {
                                 <SidebarLabel>Rutas Disponibles</SidebarLabel>
                             </div>                
                         </SidebarLink>
+                        <SidebarLink to="/myroutes">
+                            <div>
+                                <FaIcons.FaMapMarkedAlt />
+                                <SidebarLabel>Mis Rutas</SidebarLabel>
+                            </div>                
+                        </SidebarLink>
                         {linkRoutes}
                         <SidebarLink to="/configuration">
                             <div>
@@ -126,7 +132,7 @@ function Sidebar() {
                         <SidebarLink to="/">
                             <div>
                                 <BiIcons.BiLogOut />
-                                <SidebarLabel onClick={SignOut}>Cerrar Sesión</SidebarLabel>
+                                <SidebarLabel onClick={signOut}>Cerrar Sesión</SidebarLabel>
                             </div>                
                         </SidebarLink>
                     </SidebarWrap>

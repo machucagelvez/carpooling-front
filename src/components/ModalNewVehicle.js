@@ -9,7 +9,7 @@ const schema = yup.object().shape({
     brand: yup.string().required('Campo obligatorio')
 })
 
-function RefreshToken(token) {
+function refreshToken(token) {
 
     fetch('http://localhost:4000/auth/refresh',{
         method: 'GET',
@@ -25,7 +25,7 @@ function RefreshToken(token) {
     })
 }
 
-function ChangeType(props) {
+function changeType(props) {
 
     fetch(`http://localhost:4000/user/${props.id}`,{
         method: 'PUT',
@@ -38,13 +38,13 @@ function ChangeType(props) {
     })
     .then(res => res.json())
     .then(data => {
-        RefreshToken(localStorage.token)
+        refreshToken(localStorage.token)
     })
 }
 
-function SaveVehicle(values, props) {
+function saveVehicle(values, props) {
 
-    ChangeType(props)
+    changeType(props)
     const userId = {userId: props.id}    
     const vehicleData = {...userId, ...values}
     fetch('http://localhost:4000/vehicle',{
@@ -86,7 +86,7 @@ function ModalNewVehicle(props) {
                     <Formik
                         validationSchema={schema}
                         onSubmit={(values, actions) => {                            
-                            SaveVehicle(values, props)
+                            saveVehicle(values, props)
                             actions.setSubmitting(false);                            
                         }}
                         initialValues={{

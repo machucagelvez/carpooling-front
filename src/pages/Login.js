@@ -10,7 +10,7 @@ const schema = yup.object().shape({
     password: yup.string().required('Campo obligatorio')
 })
 
-function SignIn(values, props) {
+function signIn(values, props) {
     fetch('http://localhost:4000/auth/login',{
             method: 'POST',
             body:JSON.stringify(values),
@@ -44,7 +44,7 @@ function Login(props) {
                     <Formik
                         validationSchema={schema}
                         onSubmit={(values, actions) => { 
-                            SignIn(values, props)
+                            signIn(values, props)
                             actions.setSubmitting(false)
                         }}
                         initialValues={{

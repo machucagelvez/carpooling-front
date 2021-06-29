@@ -12,10 +12,9 @@ const schema = yup.object().shape({
     spaces: yup.number().required('Campo obligatorio')
 })
 
-function SaveRoute(values, props) {   
+function saveRoute(values, props) {   
     const emptySpaces = values.spaces 
     const completeRoute = {...props.route, ...values, emptySpaces}
-    console.log(props.route)
     fetch('http://localhost:4000/route',{
             method: 'POST',
             body:JSON.stringify(completeRoute),
@@ -52,7 +51,7 @@ function ModalNewRoute(props) {
                     <Formik
                         validationSchema={schema}
                         onSubmit={(values, actions) => {                            
-                            SaveRoute(values, props)
+                            saveRoute(values, props)
                             actions.setSubmitting(false);                            
                         }}
                         initialValues={{

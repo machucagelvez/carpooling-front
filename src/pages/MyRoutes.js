@@ -1,11 +1,13 @@
 import { Component } from "react";
 import { Table } from 'react-bootstrap'
+import { Link } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import Sidebar from "../components/Sidebar";
 
 
 
-class CarpoolerRoutes extends Component{
+
+class MyRoutes extends Component {
 
     constructor() {
         super()
@@ -14,35 +16,17 @@ class CarpoolerRoutes extends Component{
         this.state = {
             token: token,
             userId: decoded.id,
-            user: decoded.user,
-            vehicleId: '',
+            routeId: 1,
             routeName: '',
             cost: '',
-            routeOrigin: '',
-            routeDestination: '',
-            spaces: '',
-            emptySpaces: '',
             carpooler: '',
             time: '',
             schedule: '',
             routes: []
         }
-
-        this.handleClick = this.handleClick.bind(this);
     }
 
-    handleClick() {
-        this.props.history.push(
-            "/viewmap", 
-            {
-                vehicleId: this.state.vehicleId, 
-                user: this.state.user,
-                userId: this.state.userId
-            }
-        )
-    }
-
-    routeByVehicle() {
+    routesByUser() {
         fetch(`http://localhost:4000/user/${this.state.userId}`, {
             method: 'GET',
             headers:{
@@ -53,47 +37,28 @@ class CarpoolerRoutes extends Component{
         })
         .then(res => res.json())
         .then(user => {
-            this.setState({vehicleId: user.data.vehicle[0].vehicleId})
-            this.getRoutes()
-        })
-    }
-
-    getRoutes() {
-        fetch(`http://localhost:4000/vehicle/${this.state.vehicleId}`, {
-            method: 'GET',
-            headers:{
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${this.state.token}`
-            }
-        })
-        .then(res => res.json())
-        .then(vehicle => {
-            this.setState({routes: vehicle.data.route})
+            this.setState({routes: user.data.routes})
         })
     }
 
     componentDidMount() {
-        this.routeByVehicle()        
+        this.routesByUser()        
     }
 
     render() {
-
         return(
             <div className="container">
                 <Sidebar/>
                 <div className="row d-flex justify-content-between mt-4">
-                    <h4 className="text-black-50 ml-4">Rutas Carpooler</h4>
-                    <button className="btn btn-primary mr-4 mb-2" onClick={this.handleClick}>Nueva ruta</button>
+                    <h4 className="text-black-50 ml-4">Mis rutas</h4>
                 </div>
                 <Table striped responsive="sm">
                     <thead>
                         <tr>
-                        <th scope="col">Nombre</th>
+                        <th scope="col">Ruta</th>
                         <th scope="col">Horario</th>
                         <th scope="col">Costo</th>
-                        <th scope="col">Puestos</th>
-                        <th scope="col">Puestos vacíos</th>
+                        <th scope="col">Carpooler</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -101,21 +66,32 @@ class CarpoolerRoutes extends Component{
                             this.state.routes.map(route => {
                                 return(
                                     <tr key={route.routeId}>
-                                        <td>{route.routeName}</td>
+                                        <td><Link 
+                                            to={{
+                                                pathname: "/viewmap", 
+                                                state: {
+                                                    routeId: route.routeId,
+                                                    schedule: route.schedule,
+                                                    time: route.time,
+                                                    carpooler: route.carpooler,
+                                                    cost: route.cost,
+                                                    routeName: route.routeName
+                                                }}}>
+                                            {route.routeName}
+                                        </Link></td>
                                         <td>{route.schedule} - {route.time}</td>
-                                        <td>{route.cost}</td>
-                                        <td>{route.spaces}</td>
-                                        <td>{route.emptySpaces}</td>
+                                        <td>${route.cost}</td>
+                                        <td>{route.carpooler}</td>
                                     </tr>
                                 )
                             })
                             
                         }
                     </tbody>
-                </Table>
+                </Table>                
             </div>
         )
     }
 }
 
-export default CarpoolerRoutes
+export default MyRoutes

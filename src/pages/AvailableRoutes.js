@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { withRouter, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Table } from 'react-bootstrap'
 import Sidebar from "../components/Sidebar";
 
@@ -14,6 +14,7 @@ class AvailableRoutes extends Component {
             routeName: '',
             carpooler: '',
             cost: '',
+            emptySpaces: '',
             routes: []
         }
 
@@ -24,8 +25,8 @@ class AvailableRoutes extends Component {
         const apiUrl = 'http://localhost:4000/route';
         fetch(apiUrl)
             .then((response) => response.json())         
-            .then((datos) => {
-                this.setState({routes: datos.data});
+            .then((route) => {
+                this.setState({routes: route.data});
             })
     }
 
@@ -45,25 +46,23 @@ class AvailableRoutes extends Component {
                 })
                 const {routes, ...rest} = this.state
                 this.props.history.push('/viewmap', rest)
-            })
-
-        
+            })        
     }
     
-    render() {
-        
+    render() {        
         return (
             <div className="container">
                 <Sidebar/>
                 <div className="row d-flex justify-content-start mt-4">
                     <h4 className="text-black-50 ml-4">Rutas disponibles</h4>
                 </div>
-
                 <Table striped responsive="sm">
                     <thead>
                         <tr>
                         <th scope="col">Ruta</th>
                         <th scope="col">Horario</th>
+                        <th scope="col">Costo</th>
+                        <th scope="col">Puestos disponibles</th>
                         <th scope="col">Carpooler</th>
                         </tr>
                     </thead>
@@ -74,6 +73,8 @@ class AvailableRoutes extends Component {
                                     <tr key={route.routeId}>                                        
                                         <td><Link to="#" onClick={() => this.handleClick(route.routeId)}>{route.routeName}</Link></td>
                                         <td>{route.schedule} - {route.time}</td>
+                                        <td>{route.cost}</td>
+                                        <td>{route.emptySpaces}</td>
                                         <td>{route.carpooler}</td>
                                     </tr>
                                 )                                
@@ -81,8 +82,6 @@ class AvailableRoutes extends Component {
                         }
                     </tbody>
                 </Table>
-
-
             </div>
         )
     }
@@ -90,4 +89,4 @@ class AvailableRoutes extends Component {
 
 }
 
-export default withRouter(AvailableRoutes)
+export default AvailableRoutes

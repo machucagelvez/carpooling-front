@@ -68,7 +68,6 @@ class CreateRoute extends Component {
             (response, status) => {
                 if(status === 'OK') {
                     this.directionsRenderer.setDirections(response);
-                    console.log(response)
                     this.setState({createdRoute: JSON.stringify(response)})
                 }else {
                 window.alert("Directions request failed due to " + status);

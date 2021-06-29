@@ -13,7 +13,7 @@ const schema = yup.object().shape({
     terms: yup.bool().required().oneOf([true], 'Se deben aceptar los términos y condiciones')
 })
 
-function SignIn(values, props) {
+function signIn(values, props) {
     fetch('http://localhost:4000/auth/login',{
             method: 'POST',
             body:JSON.stringify(values),
@@ -35,7 +35,7 @@ function SignIn(values, props) {
 
 function Register(props) {
 
-    function SaveUser(values) {
+    function saveUser(values) {
         fetch('http://localhost:4000/user',{
             method: 'POST',
             body:JSON.stringify(values),
@@ -49,8 +49,7 @@ function Register(props) {
             if(data.message!=='Usuario creado') {
                 window.alert(data.message)
             }else{
-                SignIn(values, props)
-                //props.history.push('/routes')
+                signIn(values, props)
             }
             
         })
@@ -63,7 +62,7 @@ function Register(props) {
             <Formik
                 validationSchema={schema}
                 onSubmit={(values, actions) => {                            
-                            SaveUser(values)
+                            saveUser(values)
                             actions.setSubmitting(false);
                 }}
                 initialValues={{
