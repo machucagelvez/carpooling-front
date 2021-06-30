@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import jwt_decode from "jwt-decode";
 import './styles/CreateRoute.css'
 
@@ -58,9 +58,15 @@ class JoinRoute extends Component {
                 'Authorization': `Bearer ${this.state.token}`
             }
         })
-        .then(res => res.json())
-        .then(route => {
-                      
+        .then(res => {
+            if (!res.ok) throw Error(res.status);
+            return res.json();
+        })
+        .catch(() => {
+            window.alert('La ruta no tiene espacios disponibles')
+        })
+        .then(() => {
+            this.props.history.push('/myroutes')
         })
     }
 
@@ -133,4 +139,4 @@ class JoinRoute extends Component {
     }
 }
 
-export default JoinRoute
+export default withRouter(JoinRoute)

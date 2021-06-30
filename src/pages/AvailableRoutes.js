@@ -7,7 +7,9 @@ class AvailableRoutes extends Component {
 
     constructor() {
         super()
+        const token = localStorage.token
         this.state = {
+            token: token,
             routeId: '',
             schedule: '',
             time: '',
@@ -23,7 +25,14 @@ class AvailableRoutes extends Component {
 
     componentDidMount() {
         const apiUrl = 'http://localhost:4000/route';
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            method: 'GET',
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.state.token}`
+            }
+        })
             .then((response) => response.json())         
             .then((route) => {
                 this.setState({routes: route.data});
@@ -32,7 +41,14 @@ class AvailableRoutes extends Component {
 
     handleClick(id) {
         const apiUrl = `http://localhost:4000/route/${id}`;
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            method: 'GET',
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.state.token}`
+            }
+        })
             .then(response => response.json())
             .then(route => {
                 this.setState({

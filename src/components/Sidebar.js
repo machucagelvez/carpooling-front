@@ -78,10 +78,10 @@ function Sidebar() {
 
     const token = localStorage.token
     const decoded = jwt_decode(token)
-    const [type] = useState(decoded.type);
+    //const [type] = useState(decoded.type);
 
     let linkRoutes, button
-    if(type) {
+    if(decoded.type) {
         button = <ModalNewVehicle id={decoded.id}/>  
     }else{        
         linkRoutes = <ActiveRoutes/>

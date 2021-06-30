@@ -2,10 +2,18 @@ import { Component } from "react";
 import { Table } from 'react-bootstrap'
 import { Link } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import ReactWhatsapp from 'react-whatsapp';
+import * as IoIcons from "react-icons/io";
 import Sidebar from "../components/Sidebar";
 
 
-
+function WhatsApp(phone) {
+    return (    
+        <ReactWhatsapp number={phone.phone} message="Hola, quisiera hablar de la ruta" className="btn btn-link text-success shadow-none">
+            <IoIcons.IoLogoWhatsapp/>
+        </ReactWhatsapp>
+    )
+} 
 
 class MyRoutes extends Component {
 
@@ -24,7 +32,7 @@ class MyRoutes extends Component {
             schedule: '',
             routes: []
         }
-    }
+    }    
 
     routesByUser() {
         fetch(`http://localhost:4000/user/${this.state.userId}`, {
@@ -59,6 +67,7 @@ class MyRoutes extends Component {
                         <th scope="col">Horario</th>
                         <th scope="col">Costo</th>
                         <th scope="col">Carpooler</th>
+                        <th scope="col">WhatsApp</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -82,6 +91,7 @@ class MyRoutes extends Component {
                                         <td>{route.schedule} - {route.time}</td>
                                         <td>${route.cost}</td>
                                         <td>{route.carpooler}</td>
+                                        <td><WhatsApp phone={route.vehicle.user.phone}/></td>
                                     </tr>
                                 )
                             })

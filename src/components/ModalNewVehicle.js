@@ -9,21 +9,21 @@ const schema = yup.object().shape({
     brand: yup.string().required('Campo obligatorio')
 })
 
-function refreshToken(token) {
+// function refreshToken(token) {
 
-    fetch('http://localhost:4000/auth/refresh',{
-        method: 'GET',
-        headers:{
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }
-    })
-    .then(res => res.json())
-    .then(data => {
-        localStorage.token = data.data.accessToken
-    })
-}
+//     fetch('http://localhost:4000/auth/refresh',{
+//         method: 'GET',
+//         headers:{
+//             'Accept': 'application/json',
+//             'Content-Type': 'application/json',
+//             'Authorization': `Bearer ${token}`
+//         }
+//     })
+//     .then(res => res.json())
+//     .then(data => {
+//         localStorage.token = data.data.accessToken
+//     })
+// }
 
 function changeType(props) {
 
@@ -37,8 +37,8 @@ function changeType(props) {
         }
     })
     .then(res => res.json())
-    .then(data => {
-        refreshToken(localStorage.token)
+    .then(() => {
+        //refreshToken(localStorage.token)
     })
 }
 
@@ -52,7 +52,8 @@ function saveVehicle(values, props) {
         body:JSON.stringify(vehicleData),
         headers:{
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.token}`
         }
     })
     .then(res => res.json())

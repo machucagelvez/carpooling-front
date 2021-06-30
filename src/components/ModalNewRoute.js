@@ -20,7 +20,8 @@ function saveRoute(values, props) {
             body:JSON.stringify(completeRoute),
             headers:{
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.token}`
             }
         })
         .then(res => res.json())
